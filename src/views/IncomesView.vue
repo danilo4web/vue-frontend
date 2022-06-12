@@ -1,23 +1,22 @@
 <template>
   <div class="container">
-    <h3 class="p-3 text-center">Incomes</h3>
+    <h3 class="p-3 text-center">My incomes:</h3>
+
+    <a href="/deposit" class="btn btn-success">+ Deposit a Check</a><br /><br />
+    
     <table class="table table-striped table-bordered">
       <thead>
           <tr>
               <th>Date</th>
               <th>Description</th>
               <th>Amount</th>
-              <th>type</th>
-              <th>date</th>
           </tr>
       </thead>
       <tbody>
           <tr v-for="transaction in transactions" :key="transaction.id">
+            <td>{{transaction.date}}</td>
               <td>{{transaction.description}}</td>
               <td>{{transaction.amount}}</td>
-              <td>{{transaction.type}}</td>
-              <td>{{transaction.check_id}}</td>
-              <td>{{transaction.created_at}}</td>
           </tr>
       </tbody>
     </table>
@@ -41,10 +40,8 @@ export default defineComponent({
     setup(props) {
         const transactions = ref([]);
 
-        api.get("/transactions/credit/1", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+        api.post("/transactions/credits/2022-06", {
+            account_id: localStorage.getItem('account_id')
         }).then(response => {
                 transactions.value = response.data
         }).catch(error => {

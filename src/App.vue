@@ -1,6 +1,6 @@
 <template>
   <div id="viewport">
-    <NavbarComponent />
+    <NavbarComponent v-if="notIsLoginPage"/>
 
     <div id="main">
         <router-view/>
@@ -11,18 +11,24 @@
 
 <script lang="ts">
 import NavbarComponent from "./components/NavbarComponent.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   components: {
     NavbarComponent
+  },
+  computed: {
+    notIsLoginPage() {
+      let routeName = this.$route.name;
+      return (routeName !== "login" && routeName !== "register");
+    }
   }
-}
+});
 </script>
 
 <style lang="scss">
 #main {
   display: flex;
-  padding-left: 18em;
   width: 100%;
 }
 body{
@@ -62,7 +68,7 @@ Sidebar
   -webkit-backface-visibility: hidden;
   
   header{
-    background-color: #09f;
+    background-color: #0dcaf0;
     width: 100%;
     display:block;
     padding: 0.75em	1em;
@@ -91,20 +97,22 @@ Sidebar Nav
     display: block;
     padding: 0;
     margin: 0;
+    margin-top: 15px;
     
     li{
       margin-left: 0;
-      padding-left: 0;
-      //min-width: 13em;
+      padding-left: 15px;
       display:inline-block;
       width: 100%;
       
       a{
         color: rgba(255,255,255,0.9);
-        font-size: 0.75em;
+        font-size: 16px;
+        font-weight: bold;
         padding: 1.05em	1em;
         position: relative;
         display:block;
+        text-decoration: none;
       }
 /* -------------
 Sidebar: icons

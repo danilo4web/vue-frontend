@@ -1,12 +1,6 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import DashboardView from '../views/DashboardView.vue'
 
 const routes: Array<RouteRecordRaw> = [
-  {
-    path: '/',
-    name: 'dashboard',
-    component: DashboardView
-  },
   {
     path: '/balance',
     name: 'balance',
@@ -33,6 +27,16 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import(/* webpackChunkName: "expenses" */ '../views/IncomesView.vue')
   },
   {
+    path: '/deposit',
+    name: 'deposit',
+    component: () => import(/* webpackChunkName: "expenses" */ '../views/DepositView.vue')
+  },
+  {
+    path: '/purchase',
+    name: 'purchase',
+    component: () => import(/* webpackChunkName: "expenses" */ '../views/PurchaseView.vue')
+  },
+  {
     path: '/checks',
     name: 'checks',
     component: () => import(/* webpackChunkName: "checks" */ '../views/ChecksView.vue')
@@ -52,6 +56,28 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+const isLoggedIn = () => {
+  return localStorage.getItem('token')
+}
+
+const protectedRoutes = [
+  "balance",
+  "expenses",
+  "checks_status",
+  "incomes",
+  "checks"
+]
+router.beforeEach((to, from, next) => {
+  const name: any = to.name;
+  const isProtected = protectedRoutes.includes(name);
+  if(isProtected && !isLoggedIn()){
+    next({
+      path: '/login',
+      query: { redirect: to.fullPath }
+    })
+  }else next()
 })
 
 export default router

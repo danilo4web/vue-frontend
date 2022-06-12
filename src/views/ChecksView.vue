@@ -2,7 +2,6 @@
   <div class="page">
       <header>
         <h3 class="p-3 text-center">Checks</h3>
-
         <div class="status">
           <button @click="handleClick('pending')" class="btn btn-warning">Pending</button>
           <button @click="handleClick('approved')" class="btn btn-success">Approved</button>
@@ -12,11 +11,11 @@
       <br />
       <ChecksComponent :searchForStatus="searchForStatus" />
     </div>
-</template>s
+</template>
 
 <script lang="ts">
 
-import { defineComponent, onMounted, ref } from "vue";
+import { defineComponent, ref } from "vue";
 import StatusCheck from "@/types/StatusCheck";
 import ChecksComponent from "@/components/ChecksComponent.vue"
 

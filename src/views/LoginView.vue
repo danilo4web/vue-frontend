@@ -1,6 +1,4 @@
 <template>
-
-<div class="center">
   <div class="login" v-if="!token">
     <form @submit.prevent="onSubmit">
       <div class="mb-3">
@@ -11,21 +9,22 @@
         <label for="email" class="form-label">Password</label>
         <input type="password"  class="form-control" name="password" v-model="password" />
       </div>
-      <button type="button" class="btn btn-link" v-on:click="login()">LOGIN</button> 
+      <button type="button" class="btn btn-success" v-on:click="login()">LOGIN</button> 
     </form>
 
-    <div class="alert alert-danger" role="alert">
-      {{ error }}
+    <br />
+    <div class="account">
+      <router-link to="/register">Register now!</router-link>
     </div>
+
+    <div class="alert alert-danger" role="alert" v-if="!login()">
+      ERRO!
     </div>
   </div>
-  
 </template>
 
-
-
 <script lang="ts">
-import { defineComponent, onMounted, ref,  } from "vue";
+import { defineComponent } from "vue";
 import api from "@/services/api";
 
 export default defineComponent({
@@ -40,18 +39,21 @@ export default defineComponent({
   },
   methods: {
     async login() {
-      console.log(this.password);
-      console.log(this.email);
-
       await api.post("/login", {
         email: this.email,
         password: this.password})
       .then((result) => {
           localStorage.setItem('token', result.data.access_token);
+          localStorage.setItem('user_id', result.data.id);
+          localStorage.setItem('account_id', result.data.account_id);
+          localStorage.setItem('account_number', result.data.account_number);
+
+          console.log('go to: /balance');
           this.$router.push("/balance");
       })
       .catch(error => {
-        this.error = error.response.data.message
+          this.error = error.response.data.message
+          return false;
       });
     },
     onSubmit () {
@@ -63,10 +65,16 @@ export default defineComponent({
 
 
 <style scoped>
-.center {
+.input-group {
+  margin-top: 15px;
+}
+.account {
+   margin-top: 25px;
+}
+.login {
   margin: auto;
-  width: 40%;
-  min-width: 200px;
+  width: 30%;
+  min-width: 300px;
   padding: 10px;
 }
 </style>

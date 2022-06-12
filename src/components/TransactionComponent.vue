@@ -29,7 +29,7 @@ import Check from '@/types/Check'
 import api from "@/services/api";
 import { DOMDirectiveTransforms } from "@vue/compiler-dom";
 
-export default defineComponent({
+export default defineComponent({    
     name: "TransactionComponent",
     props: {
         searchForType: {
@@ -40,11 +40,11 @@ export default defineComponent({
     setup(props) {
         const transactions = ref([]);
 
-        api.get("/transactions", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
-        }).then(response => {
+        console.log(localStorage.getItem('token'));
+
+        api.post("/transactions/month/2022-06", {
+                account_id: localStorage.getItem('account_id')
+            }).then(response => {
                 transactions.value = response.data
         }).catch(error => {
                 console.log(error);

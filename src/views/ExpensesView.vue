@@ -1,23 +1,22 @@
 <template>
   <div class="container">
-    <h3 class="p-3 text-center">Expenses</h3>
+    <h3 class="p-3 text-center">My Expenses:</h3>
+
+    <a href="/purchase" class="btn btn-danger">+ Purchase</a><br /><br />
+
     <table class="table table-striped table-bordered">
       <thead>
           <tr>
               <th>Date</th>
               <th>Description</th>
               <th>Amount</th>
-              <th>type</th>
-              <th>date</th>
           </tr>
       </thead>
       <tbody>
           <tr v-for="transaction in transactions" :key="transaction.id">
-              <td>{{transaction.description}}</td>
-              <td>{{transaction.amount}}</td>
-              <td>{{transaction.type}}</td>
-              <td>{{transaction.check_id}}</td>
-              <td>{{transaction.created_at}}</td>
+            <td>{{transaction.date}}</td>
+            <td>{{transaction.description}}</td>
+            <td>{{transaction.amount}}</td>
           </tr>
       </tbody>
     </table>
@@ -25,24 +24,20 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, onUpdated, ref } from "vue";
-import Check from '@/types/Check'
+import { defineComponent, ref } from "vue";
 import api from "@/services/api";
-import { DOMDirectiveTransforms } from "@vue/compiler-dom";
 
 export default defineComponent({
     name: "ExpensesView",
     setup() {
         const transactions = ref([]);
 
-        api.get("/transactions/debit/1", {
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            }
+        api.post("/transactions/debits/2022-06", {
+            account_id: localStorage.getItem('account_id')
         }).then(response => {
-                transactions.value = response.data
+            transactions.value = response.data
         }).catch(error => {
-                console.log(error);
+            console.log(error);
         });
 
         return {transactions}

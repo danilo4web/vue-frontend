@@ -10,10 +10,10 @@
           </thead>
           <tbody>
               <tr v-for="check in foundChecks" :key="check.id">
-                  <td>{{check.date}}</td>
-                  <td>{{check.description}}</td>
-                  <td>{{check.amount}}</td>
-                  <td>{{check.status}}</td>
+                  <td>{{ check.created_at }}</td>
+                  <td>{{ check.description }}</td>
+                  <td>{{ check.amount }}</td>
+                  <td>{{ check.status }}</td>
               </tr>
           </tbody>
       </table>
@@ -47,13 +47,8 @@ export default defineComponent({
     methods: {
         getChecksByStatus(status: string) {
             const checks = ref([]);
-            console.log("/checks/" + status);
 
-            api.get("/checks/" + status, {
-                headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
-                }
-            }).then(response => {
+            api.get("/checks/status/" + status).then(response => {
                     checks.value = response.data
             }).catch(error => {
                     console.log(error);
