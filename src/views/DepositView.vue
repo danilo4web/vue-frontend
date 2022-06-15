@@ -42,7 +42,7 @@ export default defineComponent({
         description: this.description,
         account_id: localStorage.getItem('account_id')
     }).then((result) => {
-      this.$router.push("/checks/pending");
+      this.$router.push("/checks/status/pending");
     })
     .catch(error => {
       console.error("There was an error!", error);

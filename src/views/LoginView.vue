@@ -16,10 +16,6 @@
     <div class="account">
       <router-link to="/register">Register now!</router-link>
     </div>
-
-    <div class="alert alert-danger" role="alert" v-if="!login()">
-      ERRO!
-    </div>
   </div>
 </template>
 
